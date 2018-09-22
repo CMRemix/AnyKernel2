@@ -1,3 +1,5 @@
 dtbs/
 kernel/
 version
+*.img
+*.zip
