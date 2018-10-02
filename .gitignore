@@ -1,5 +1,5 @@
-dtbs/
-kernel/
-version
 *.img
 *.zip
+*.lz4
+*.1-soc.dtb
+
