@@ -39,7 +39,7 @@ dump_boot;
 android_version="$(file_getprop /system/build.prop "ro.build.version.release")";
 security_patch="$(file_getprop /system/build.prop "ro.build.version.security_patch")";
 case "$android_version:$security_patch" in
-  "9:2018-10-05") support_status="a supported";;
+  "9:2018-11-05") support_status="a supported";;
   "8.1.0"*|"P"*|"9"*) support_status="an unsupported";;
   *) die "Completely unsupported OS configuration!";;
 esac;
@@ -54,7 +54,7 @@ if [ -f $compressed_image ]; then
   if [ -d $ramdisk/.backup ]; then
     ui_print " "; ui_print "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
     $bin/magiskboot --decompress $compressed_image $decompressed_image;
-    $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D6673 77616E745F696E697472616D6673;
+    $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
     $bin/magiskboot --compress=lz4 $decompressed_image $compressed_image;
   fi;
 
