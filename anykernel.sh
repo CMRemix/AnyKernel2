@@ -11,7 +11,7 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=taimen
 device.name2=walleye
-supported.versions=9 (Android Pie)
+supported.versions=
 '; } # end properties
 
 # shell variables
