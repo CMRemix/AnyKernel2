@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() { '
-kernel.string=Elixer Kernel for the Pixel 2 (XL) by ZION959
+kernel.string=ElixerKernel for the Pixel 2 (XL) by ZION959
 do.devicecheck=1
 do.modules=0
 do.cleanup=1
