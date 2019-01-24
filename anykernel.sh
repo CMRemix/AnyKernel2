@@ -27,7 +27,7 @@ ramdisk_compression=auto;
 
 # Print message and exit
 die() {
-  ui_print " "; ui_print "$*";
+  ui_print "•"; • ui_print "$*";
   exit 1;
 }
 
@@ -44,7 +44,7 @@ case "$android_version:$security_patch" in
   "8.1.0"*|"P"*|"9"*) support_status="an unsupported";;
   *) die "Completely unsupported OS configuration!";;
 esac;
-ui_print " "; ui_print "You are on $android_version with the $security_patch security patch level! This is $support_status configuration...";
+ui_print "•"; ui_print " • You are on $android_version with the $security_patch security patch level! This is $support_status configuration...";
 
 
 # If the kernel image and dtbs are separated in the zip
@@ -53,11 +53,19 @@ compressed_image=$decompressed_image.lz4
 if [ -f $compressed_image ]; then
   # Hexpatch the kernel if Magisk is installed ('skip_initramfs' -> 'want_initramfs')
   if [ -d $ramdisk/.backup ]; then
-    ui_print " "; ui_print "Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
+    ui_print "•"; ui_print " • Magisk detected! Patching kernel so reflashing Magisk is not necessary...";
     $bin/magiskboot --decompress $compressed_image $decompressed_image;
     $bin/magiskboot --hexpatch $decompressed_image 736B69705F696E697472616D667300 77616E745F696E697472616D667300;
     $bin/magiskboot --compress=lz4 $decompressed_image $compressed_image;
   fi;
+
+# begin ramdisk changes
+    rm -fr $ramdisk/overlay
+
+    ui_print " • Unpacking image & patch ElixirKernel config"
+    mv /tmp/anykernel/overlay $ramdisk
+    cp /system_root/init.rc $ramdisk/overlay
+    insert_line $ramdisk/overlay/init.rc "init.elixir.rc" after "import /init.usb.configfs.rc" "import /init.elixir.rc"
 
   # Concatenate all of the dtbs to the kernel
   cat $compressed_image /tmp/anykernel/dtbs/*.dtb > /tmp/anykernel/Image.lz4-dtb;
@@ -79,11 +87,11 @@ case "$hostname" in
 esac;
 if [ "$user" == "custom" -o "$host" == "custom" ]; then
   if [ ! -z /tmp/anykernel/dtbo.img ]; then
-    ui_print " "; ui_print "You are on a custom ROM, patching dtbo to remove verity...";
+    ui_print " "; ui_print " • You are on a custom ROM, patching dtbo to remove verity...";
     $bin/magiskboot --dtb-patch /tmp/anykernel/dtbo.img;
   fi;
 else
-  ui_print " "; ui_print "You are on stock, not patching dtbo to remove verity!";
+  ui_print " "; ui_print " • You are on stock, not patching dtbo to remove verity!";
 fi;
 
 
