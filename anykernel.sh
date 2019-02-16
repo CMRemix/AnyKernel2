@@ -11,7 +11,7 @@ do.cleanup=1
 do.cleanuponabort=0
 device.name1=taimen
 device.name2=walleye
-supported.versions=
+supported.versions=8.1.0, 9
 '; } # end properties
 
 # shell variables
