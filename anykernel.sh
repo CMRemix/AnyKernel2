@@ -63,9 +63,9 @@ if [ -f $compressed_image ]; then
     rm -fr $ramdisk/overlay
 
     ui_print " • Unpacking image & patch ElixirKernel config"
+	chmod +x $TMPDIR/overlay/*.sh
+	mv $TMPDIR/overlay/init.elixir.rc $TMPDIR/overlay/init.$(getprop ro.hardware).rc
     mv /tmp/anykernel/overlay $ramdisk
-    cp /system_root/init.rc $ramdisk/overlay
-    insert_line $ramdisk/overlay/init.rc "init.elixir.rc" after "import /init.usb.configfs.rc" "import /init.elixir.rc"
 
   # Concatenate all of the dtbs to the kernel
   cat $compressed_image /tmp/anykernel/dtbs/*.dtb > /tmp/anykernel/Image.lz4-dtb;
