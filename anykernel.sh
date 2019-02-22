@@ -71,6 +71,11 @@ if [ -f $compressed_image ]; then
   cat $compressed_image /tmp/anykernel/dtbs/*.dtb > /tmp/anykernel/Image.lz4-dtb;
 fi;
 
+mountpoint -q /data && {
+  mkdir -p /data/adb/magisk_simple/vendor/etc
+  cp $TMPDIR/powerhint.json /data/adb/magisk_simple/vendor/etc
+}
+
 
 # Patch dtbo.img on custom ROMs
 username="$(file_getprop /system/build.prop "ro.build.user")";
