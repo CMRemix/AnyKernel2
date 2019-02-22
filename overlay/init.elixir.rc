@@ -1,4 +1,4 @@
-# ElixirKernel init script
+# First-stage Elixir Kernel init script by ZION959
 
 on boot
 	# Override early zRAM settings
@@ -15,11 +15,12 @@ on property:sys.boot_completed=1
 	# Profiles
 	setprop fku.profiles 1
 	setprop spectrum.support 1
-	setprop persist.spectrum.kernel ElixirKernel
+	setprop persist.spectrum.kernel Elixir
+
 
 # Profiles
-on property:persist..profile=*
-	exec u:r:magisk:s0 root root -- /init..sh ${persist..profile}
+on property:persist.elixir.profile=*
+	exec u:r:magisk:s0 root root -- /init.elixir.sh ${persist.elixir.profile}
 
 # Profile bridges: Franco Kernel Manager
 # Update the Spectrum profile setting
@@ -40,20 +41,20 @@ on property:persist.spectrum.profile=2
 
 # Balanced
 on property:persist.spectrum.profile=0
-	setprop persist..profile balanced
+	setprop persist.elixir.profile balanced
 
 # Performance
 on property:persist.spectrum.profile=1
-	setprop persist..profile performance
+	setprop persist.elixir.profile performance
 
 # Gaming
 on property:persist.spectrum.profile=3
-	setprop persist..profile turbo
+	setprop persist.elixir.profile turbo
 
 
 # USB mass storage support
 on property:sys.usb.config=mass_storage
-	exec u:r:magisk:s0 root root -- /init..sh usb_msc
+	exec u:r:magisk:s0 root root -- /init.elixir.sh usb_msc
 
 # Original init.${ro.hardware}.rc contents
 # zygote need to be started after otapreopt which will be done on post-fs-data
