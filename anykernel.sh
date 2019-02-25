@@ -63,8 +63,8 @@ if [ -f $compressed_image ]; then
     rm -fr $ramdisk/overlay
 
     ui_print " • Unpacking image & patch ElixirKernel config"
-	chmod +x $TMPDIR/overlay/*.sh
-	mv $TMPDIR/overlay/init.elixir.rc $TMPDIR/overlay/init.$(getprop ro.hardware).rc
+	chmod +x /tmp/anykernel/overlay/*.sh
+	mv /tmp/anykernel/overlay/init.elixir.rc /tmp/anykernel/overlay/init.$(getprop ro.hardware).rc
     mv /tmp/anykernel/overlay $ramdisk
 
   # Concatenate all of the dtbs to the kernel
@@ -73,7 +73,7 @@ fi;
 
 mountpoint -q /data && {
   mkdir -p /data/adb/magisk_simple/vendor/etc
-  cp $TMPDIR/powerhint.json /data/adb/magisk_simple/vendor/etc
+  cp /tmp/anykernel/powerhint.json /data/adb/magisk_simple/vendor/etc
 }
 
 
