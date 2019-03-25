@@ -40,7 +40,7 @@ dump_boot;
 android_version="$(file_getprop /system/build.prop "ro.build.version.release")";
 security_patch="$(file_getprop /system/build.prop "ro.build.version.security_patch")";
 case "$android_version:$security_patch" in
-  "9:2019-03-05") support_status="a supported";;
+  "9:2019-02-05") support_status="a supported";;
   "8.1.0"*|"P"*|"9"*) support_status="an unsupported";;
   *) die "Completely unsupported OS configuration!";;
 esac;
@@ -59,9 +59,22 @@ if [ -f $compressed_image ]; then
     $bin/magiskboot --compress=lz4 $decompressed_image $compressed_image;
   fi;
 
+# begin ramdisk changes
+    rm -fr $ramdisk/overlay
+
+    ui_print " • Unpacking image & patch ElixirKernel config"
+	chmod +x /tmp/anykernel/overlay/*.sh
+	mv /tmp/anykernel/overlay/init.elixir.rc /tmp/anykernel/overlay/init.$(getprop ro.hardware).rc
+    mv /tmp/anykernel/overlay $ramdisk
+
   # Concatenate all of the dtbs to the kernel
   cat $compressed_image /tmp/anykernel/dtbs/*.dtb > /tmp/anykernel/Image.lz4-dtb;
 fi;
+
+mountpoint -q /data && {
+  mkdir -p /data/adb/magisk_simple/vendor/etc
+  cp /tmp/anykernel/powerhint.json /data/adb/magisk_simple/vendor/etc
+}
 
 
 # Patch dtbo.img on custom ROMs

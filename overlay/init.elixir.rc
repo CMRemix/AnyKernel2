@@ -1,0 +1,66 @@
+# First-stage Elixir Kernel init script by ZION959
+
+on boot
+	# Override early zRAM settings
+	write /sys/block/zram0/comp_algorithm lz4
+
+	# Set SQLite flags for F2FS because some DBs might be opened early
+	setprop debug.sqlite.journalmode OFF
+	setprop debug.sqlite.syncmode OFF
+
+	# USB mass storage
+	mkdir /config/usb_gadget/g1/functions/mass_storage.0
+
+on property:sys.boot_completed=1
+	# Profiles
+	setprop fku.profiles 1
+	setprop spectrum.support 1
+	setprop persist.spectrum.kernel ElixirKernel
+
+
+# Profiles
+on property:persist.elixir.profile=*
+	exec u:r:magisk:s0 root root -- /init.elixir.sh ${persist.elixir.profile}
+
+# Profile bridges: Franco Kernel Manager
+# Update the Spectrum profile setting
+on property:fku.perf.profile=0
+	setprop persist.spectrum.profile 2
+
+on property:fku.perf.profile=1
+	setprop persist.spectrum.profile 0
+
+on property:fku.perf.profile=2
+	setprop persist.spectrum.profile 1
+
+
+# Profile bridges: Spectrum
+# Battery
+on property:persist.spectrum.profile=2
+	setprop persist.elixir.profile battery
+
+# Balanced
+on property:persist.spectrum.profile=0
+	setprop persist.elixir.profile balanced
+
+# Performance
+on property:persist.spectrum.profile=1
+	setprop persist.elixir.profile performance
+
+# Gaming
+on property:persist.spectrum.profile=3
+	setprop persist.elixir.profile turbo
+
+
+# USB mass storage support
+on property:sys.usb.config=mass_storage
+	exec u:r:magisk:s0 root root -- /init.elixir.sh usb_msc
+
+# Original init.${ro.hardware}.rc contents
+# zygote need to be started after otapreopt which will be done on post-fs-data
+on zygote-start
+	# zygote is started in common init.rc
+	# and now we can continue to initialize /data/
+	# create the directory for preload content.
+	mkdir /data/preloads 0775 system system
+
