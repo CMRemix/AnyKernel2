@@ -1,7 +1,5 @@
+dtbs/*
+kernel/*
 dtbo.img
-kernel/
-dtbs/
 version
 banner
-/dtbs
-/kernel
