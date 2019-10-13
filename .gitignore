@@ -3,3 +3,5 @@ kernel/
 dtbs/
 version
 banner
+/dtbs
+/kernel
